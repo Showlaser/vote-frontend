@@ -1,10 +1,14 @@
 import Join from "components/vote/join";
-import { useState } from "react";
+import PlaylistOverview from "components/vote/playlist-overview";
+import { useEffect, useState } from "react";
 import { getVoteData } from "services/logic/vote-logic";
 
 export default function Vote() {
   const [socket, setSocket] = useState();
   const [codes, setCodes] = useState();
+  const [voteState, setVoteState] = useState();
+
+  useEffect(() => [voteState]);
 
   const connectToWebsocketServer = async (joinCode, accessCode) => {
     const voteData = await getVoteData({ joinCode, accessCode });
@@ -21,25 +25,33 @@ export default function Vote() {
       newSocket.send(JSON.stringify(identifier));
     };
     newSocket.onmessage = (event) => {
-      console.log("Message from server ", event.data);
+      update(event.data);
     };
 
     setSocket(newSocket);
   };
 
+  const update = (data) => {
+    const object = JSON.parse(data);
+    setVoteState(object);
+  };
+
   return (
     <div>
-      {codes ? null : (
-        <Join
-          onJoin={(joinCode, accessCode) => {
-            setCodes({
-              joinCode,
-              accessCode,
-            });
-            connectToWebsocketServer(joinCode, accessCode);
-          }}
+      {voteState !== undefined ? (
+        <PlaylistOverview
+          voteablePlaylistCollection={voteState?.VoteablePlaylistCollection}
         />
-      )}
+      ) : null}
+      <Join
+        onJoin={(joinCode, accessCode) => {
+          setCodes({
+            joinCode,
+            accessCode,
+          });
+          connectToWebsocketServer(joinCode, accessCode);
+        }}
+      />
     </div>
   );
 }
