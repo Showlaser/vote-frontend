@@ -12,9 +12,17 @@ export default function Join({ onJoin }) {
     >
       <h2>Enter join code</h2>
       <FormGroup>
-        <TextField id="join-code" placeholder="Join code" />
+        <TextField
+          id="join-code"
+          defaultValue="9i1mlz"
+          placeholder="Join code"
+        />
         <br />
-        <TextField id="access-code" placeholder="Access code" />
+        <TextField
+          id="access-code"
+          defaultValue="mhvd"
+          placeholder="Access code"
+        />
         <br />
         <Button
           onClick={() =>

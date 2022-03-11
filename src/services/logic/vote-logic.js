@@ -1,4 +1,4 @@
-import { Get } from "services/shared/api/api-actions";
+import { Get, Post } from "services/shared/api/api-actions";
 import { sendRequest } from "services/shared/api/api-middleware";
 import apiEndpoints from "services/shared/api/api-urls";
 
@@ -11,4 +11,8 @@ export const getVoteData = async (codes) => {
     []
   );
   return response.json();
+};
+
+export const voteOnPlaylist = (voteData) => {
+  return sendRequest(() => Post(`${apiEndpoints.vote}/vote`, voteData));
 };

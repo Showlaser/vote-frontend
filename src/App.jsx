@@ -48,6 +48,13 @@ export default function App() {
               },
             },
           },
+          MuiAccordion: {
+            styleOverrides: {
+              root: {
+                border: "1px rgb(110, 110, 110) solid",
+              },
+            },
+          },
         },
       }),
     []
