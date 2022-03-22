@@ -33,6 +33,10 @@ export const toastSubject = {
     message: "You already voted for this session",
     id: 8,
   },
+  invalidJoinCode: {
+    message: "The join code is not valid",
+    id: 9,
+  },
 };
 
 const calculateAutoCloseTime = (text) => {
