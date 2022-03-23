@@ -37,6 +37,10 @@ export const toastSubject = {
     message: "The join code is not valid",
     id: 9,
   },
+  NoSessionFound: {
+    message: "No session with this join code was found",
+    id: 10,
+  },
 };
 
 const calculateAutoCloseTime = (text) => {

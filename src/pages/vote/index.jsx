@@ -18,7 +18,16 @@ export default function Vote() {
   const forceUpdate = useCallback(() => updateState({}), []);
 
   const connectToWebsocketServer = async (joinCode, accessCode) => {
-    const voteData = await getVoteData({ joinCode, accessCode });
+    const response = await getVoteData({ joinCode, accessCode });
+
+    if (response.status === 404) {
+      showError(toastSubject.NoSessionFound);
+    }
+    if (response.status !== 200) {
+      return false;
+    }
+
+    const voteData = await response.json();
 
     let newSocket = new WebSocket("ws://localhost:5002/ws");
     newSocket.onopen = (event) => {
@@ -38,12 +47,26 @@ export default function Vote() {
     };
 
     setVoteState(voteData);
+    return true;
   };
 
-  const onJoin = (joinCode, accessCode) => {
+  const onJoin = async (joinCode, accessCode) => {
     const joinCodeIsInvalid = joinCode?.length < 4;
     if (joinCodeIsInvalid) {
       showError(toastSubject.invalidJoinCode);
+      return;
+    }
+
+    const connected = await connectToWebsocketServer(joinCode, accessCode);
+    if (!connected) {
+      return;
+    }
+    const userVotedOnThisSession = cookie.get(joinCode)?.voted ?? false;
+    if (userVotedOnThisSession) {
+      setCodes({
+        joinCode,
+        accessCode,
+      });
       return;
     }
 
@@ -55,7 +78,6 @@ export default function Vote() {
       joinCode,
       accessCode,
     });
-    connectToWebsocketServer(joinCode, accessCode);
   };
 
   const getComponents = () => {

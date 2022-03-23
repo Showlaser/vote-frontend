@@ -18,14 +18,15 @@ export default function VoteOverView({ voteState }) {
       style={{ marginTop: "25px" }}
     >
       <List style={{ width: "90%", maxWidth: "70vh" }}>
-        {voteState?.voteablePlaylistCollection?.map((playlist) => (
-          <span key={playlist?.uuid}>
-            <ListItemText primary={playlist?.playlistName} />
-            <LinearWithValueLabel
-              value={normalise(playlist?.votes?.length, 0, totalVotes)}
-            />
-          </span>
-        ))}
+        {voteState?.voteablePlaylistCollection?.map((playlist) => {
+          const value = normalise(playlist?.votes?.length, 0, totalVotes);
+          return (
+            <span key={playlist?.uuid}>
+              <ListItemText primary={playlist?.playlistName} />
+              <LinearWithValueLabel value={isNaN(value) ? 0 : value} />
+            </span>
+          );
+        })}
       </List>
     </Grid>
   );
