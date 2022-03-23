@@ -14,13 +14,13 @@ export default function Join({ onJoin }) {
       <FormGroup>
         <TextField
           id="join-code"
-          defaultValue="wiv7lv"
+          defaultValue="noh3a3"
           placeholder="Join code"
         />
         <br />
         <TextField
           id="access-code"
-          defaultValue="hpgu"
+          defaultValue="m39l"
           placeholder="Access code"
         />
         <br />

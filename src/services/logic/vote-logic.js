@@ -3,14 +3,13 @@ import { sendRequest } from "services/shared/api/api-middleware";
 import apiEndpoints from "services/shared/api/api-urls";
 
 export const getVoteData = async (codes) => {
-  const response = await sendRequest(
+  return await sendRequest(
     () =>
       Get(
         `${apiEndpoints.vote}?joinCode=${codes.joinCode}&accessCode=${codes.accessCode}`
       ),
-    []
+    [404]
   );
-  return response.json();
 };
 
 export const voteOnPlaylist = (voteData) => {
