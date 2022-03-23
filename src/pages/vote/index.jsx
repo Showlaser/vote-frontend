@@ -5,11 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import { getVoteData } from "services/logic/vote-logic";
 import { toCamelCase } from "services/shared/general";
 import { createGuid } from "services/shared/math";
+import { showError, toastSubject } from "services/shared/toast-messages";
 import Cookies from "universal-cookie";
 
 export default function Vote() {
   const [codes, setCodes] = useState();
-  const [socket, setSocket] = useState();
   const [voteState, setVoteState] = useState();
   const cookie = new Cookies();
 
@@ -20,7 +20,7 @@ export default function Vote() {
   const connectToWebsocketServer = async (joinCode, accessCode) => {
     const voteData = await getVoteData({ joinCode, accessCode });
 
-    let newSocket = new WebSocket("ws://192.168.1.31:5002/ws");
+    let newSocket = new WebSocket("ws://localhost:5002/ws");
     newSocket.onopen = (event) => {
       const identifier = {
         voteDataUuid: voteData.uuid,
@@ -33,6 +33,7 @@ export default function Vote() {
     };
     newSocket.onmessage = (event) => {
       const object = JSON.parse(event.data, toCamelCase);
+      console.log(object);
       setVoteState(object);
     };
 
