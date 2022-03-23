@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { getVoteData } from "services/logic/vote-logic";
 import { toCamelCase } from "services/shared/general";
 import { createGuid } from "services/shared/math";
-import { showError, toastSubject } from "services/shared/toast-messages";
 import Cookies from "universal-cookie";
 
 export default function Vote() {
   const [codes, setCodes] = useState();
+  const [socket, setSocket] = useState();
   const [voteState, setVoteState] = useState();
   const cookie = new Cookies().get("vote");
 
