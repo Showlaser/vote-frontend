@@ -1,7 +1,7 @@
 import Join from "components/vote/join";
 import PlaylistOverview from "components/vote/playlist-overview";
 import VoteOverView from "components/vote/vote-overview";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getVoteData } from "services/logic/vote-logic";
 import { toCamelCase } from "services/shared/general";
 import { createGuid } from "services/shared/math";
@@ -11,9 +11,11 @@ export default function Vote() {
   const [codes, setCodes] = useState();
   const [socket, setSocket] = useState();
   const [voteState, setVoteState] = useState();
-  const cookie = new Cookies().get("vote");
+  const cookie = new Cookies();
 
   useEffect(() => [voteState, codes]);
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
 
   const connectToWebsocketServer = async (joinCode, accessCode) => {
     const voteData = await getVoteData({ joinCode, accessCode });
@@ -38,6 +40,16 @@ export default function Vote() {
   };
 
   const onJoin = (joinCode, accessCode) => {
+    const joinCodeIsInvalid = joinCode?.length < 4;
+    if (joinCodeIsInvalid) {
+      showError(toastSubject.invalidJoinCode);
+      return;
+    }
+
+    const time = new Date().getTime();
+    const expires = new Date(time + 600000);
+
+    cookie.set(joinCode, { voted: false }, { expires, path: "/" });
     setCodes({
       joinCode,
       accessCode,
@@ -46,9 +58,7 @@ export default function Vote() {
   };
 
   const getComponents = () => {
-    const userVotedOnThisSession = cookie?.votes?.some(
-      (vote) => vote?.joinCode === codes?.joinCode
-    );
+    const userVotedOnThisSession = cookie.get(codes?.joinCode)?.voted ?? false;
 
     if (
       !userVotedOnThisSession &&
@@ -57,6 +67,7 @@ export default function Vote() {
     ) {
       return (
         <PlaylistOverview
+          onVote={forceUpdate}
           codes={codes}
           voteState={voteState}
           voteablePlaylistCollection={voteState?.voteablePlaylistCollection}

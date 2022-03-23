@@ -4,12 +4,10 @@ import { useCallback, useState } from "react";
 import { voteOnPlaylist } from "services/logic/vote-logic";
 import PlaylistCard from "components/vote/playlist-card";
 import Cookies from "universal-cookie";
-import { createGuid } from "services/shared/math";
 
 export default function PlaylistOverview({
   voteablePlaylistCollection,
   codes,
-  voteState,
 }) {
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
@@ -34,13 +32,12 @@ export default function PlaylistOverview({
 
     if (result.status === 200) {
       const cookies = new Cookies();
-      let currentVotes = cookies.get("vote") ?? { votes: [] };
-      currentVotes.votes.push({
-        expireDate: voteState.validUntil,
-        joinCode: codes.joinCode,
-      });
-      // TODO add remove array item from cookie
-      cookies.set("vote", currentVotes, { path: "/" });
+
+      const time = new Date().getTime();
+      const expires = new Date(time + 600000);
+
+      cookies.remove(codes?.joinCode);
+      cookies.set(codes?.joinCode, { voted: true }, { expires, path: "/" });
     }
   };
 
