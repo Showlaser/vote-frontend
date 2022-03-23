@@ -54,7 +54,9 @@ export default function PlaylistCard({ playlist, onVoteButtonClick }) {
             flexWrap: "wrap",
           }}
         >
-          <span style={{ marginRight: "5px" }}>{playlist?.votes?.length}</span>
+          <span style={{ marginRight: "5px" }}>
+            {playlist?.votes?.length ?? 0}
+          </span>
           <ThumbUpIcon />
         </div>
         <br />

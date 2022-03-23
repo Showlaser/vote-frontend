@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 export default function PlaylistOverview({
   voteablePlaylistCollection,
   codes,
+  onVote,
 }) {
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
@@ -26,7 +27,7 @@ export default function PlaylistOverview({
 
     const result = await voteOnPlaylist({
       voteDataUuid: votedPlaylist.voteDataUuid,
-      playlistUuid: votedPlaylist.uuid,
+      spotifyPlaylistUuid: votedPlaylist.uuid,
       joinData: codes,
     });
 
@@ -39,6 +40,8 @@ export default function PlaylistOverview({
       cookies.remove(codes?.joinCode);
       cookies.set(codes?.joinCode, { voted: true }, { expires, path: "/" });
     }
+
+    onVote();
   };
 
   const onVoteButtonClick = (playlist) => {
