@@ -20,6 +20,16 @@ export default function PlaylistOverview({
     onCancelClick: () => closeModal(),
   });
 
+  const setVotedData = () => {
+    const cookies = new Cookies();
+
+    const time = new Date().getTime();
+    const expires = new Date(time + 600000);
+
+    cookies.set(codes?.joinCode, null, { expires, path: "/" });
+    localStorage.setItem(codes?.joinCode, expires.toString());
+  };
+
   const vote = async (votedPlaylist) => {
     let newModalOptions = modalOptions;
     newModalOptions.show = false;
@@ -32,13 +42,7 @@ export default function PlaylistOverview({
     });
 
     if (result.status === 200) {
-      const cookies = new Cookies();
-
-      const time = new Date().getTime();
-      const expires = new Date(time + 600000);
-
-      cookies.remove(codes?.joinCode);
-      cookies.set(codes?.joinCode, { voted: true }, { expires, path: "/" });
+      setVotedData();
     }
 
     onVote();
