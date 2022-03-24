@@ -42,12 +42,20 @@ export default function Vote() {
     };
     newSocket.onmessage = (event) => {
       const object = JSON.parse(event.data, toCamelCase);
-      console.log(object);
       setVoteState(object);
     };
 
     setVoteState(voteData);
     return true;
+  };
+
+  const getUserVotedForThisSession = (joinCode = codes?.joinCode) => {
+    const localStorageExpireDate = new Date(localStorage.getItem(joinCode));
+    const dateNow = new Date();
+    const localStorageVoted = localStorageExpireDate >= dateNow;
+    const cookieVoted = cookie.get(joinCode) !== undefined;
+
+    return cookieVoted || localStorageVoted;
   };
 
   const onJoin = async (joinCode, accessCode) => {
@@ -61,8 +69,7 @@ export default function Vote() {
     if (!connected) {
       return;
     }
-    const userVotedOnThisSession = cookie.get(joinCode)?.voted ?? false;
-    if (userVotedOnThisSession) {
+    if (getUserVotedForThisSession(joinCode)) {
       setCodes({
         joinCode,
         accessCode,
@@ -70,10 +77,6 @@ export default function Vote() {
       return;
     }
 
-    const time = new Date().getTime();
-    const expires = new Date(time + 600000);
-
-    cookie.set(joinCode, { voted: false }, { expires, path: "/" });
     setCodes({
       joinCode,
       accessCode,
@@ -81,19 +84,21 @@ export default function Vote() {
   };
 
   const getComponents = () => {
-    const userVotedOnThisSession = cookie.get(codes?.joinCode)?.voted ?? false;
+    const expirationDate = new Date(voteState?.validUntil);
+    const now = new Date();
+    const votingSessionExpired = expirationDate <= now;
 
     if (
-      !userVotedOnThisSession &&
+      !getUserVotedForThisSession() &&
       codes !== undefined &&
-      voteState !== undefined
+      voteState !== undefined &&
+      !votingSessionExpired
     ) {
       return (
         <PlaylistOverview
           onVote={forceUpdate}
           codes={codes}
           voteState={voteState}
-          voteablePlaylistCollection={voteState?.voteablePlaylistCollection}
         />
       );
     }
