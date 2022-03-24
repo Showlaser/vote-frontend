@@ -1,15 +1,13 @@
 import { Grid, List, ListItem } from "@mui/material";
 import Modal from "components/shared/modal";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { voteOnPlaylist } from "services/logic/vote-logic";
 import PlaylistCard from "components/vote/playlist-card";
 import Cookies from "universal-cookie";
+import { getDifferenceBetweenTwoDatesInMinutesAndSecondsString } from "services/shared/general";
 
-export default function PlaylistOverview({
-  voteablePlaylistCollection,
-  codes,
-  onVote,
-}) {
+export default function PlaylistOverview({ voteState, codes, onVote }) {
+  const { voteablePlaylistCollection, validUntil } = voteState;
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
   const [modalOptions, setModalOptions] = useState({
@@ -19,6 +17,17 @@ export default function PlaylistOverview({
     show: false,
     onCancelClick: () => closeModal(),
   });
+
+  useEffect(() => {
+    const validUntilDate = new Date(validUntil);
+    setInterval(() => {
+      document.getElementById("countdown").innerHTML =
+        getDifferenceBetweenTwoDatesInMinutesAndSecondsString(
+          validUntilDate,
+          new Date()
+        );
+    }, 1000);
+  }, []);
 
   const setVotedData = () => {
     const cookies = new Cookies();
@@ -74,6 +83,8 @@ export default function PlaylistOverview({
       style={{ marginTop: "25px" }}
     >
       <Modal modal={modalOptions} />
+      <small>Voting closes in</small>
+      <h2 id="countdown" />
       <List style={{ width: "90%", maxWidth: "70vh" }}>
         {voteablePlaylistCollection?.map((playlist) => (
           <ListItem key={playlist.uuid}>

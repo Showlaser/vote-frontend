@@ -84,17 +84,21 @@ export default function Vote() {
   };
 
   const getComponents = () => {
+    const expirationDate = new Date(voteState?.validUntil);
+    const now = new Date();
+    const votingSessionExpired = expirationDate <= now;
+
     if (
       !getUserVotedForThisSession() &&
       codes !== undefined &&
-      voteState !== undefined
+      voteState !== undefined &&
+      !votingSessionExpired
     ) {
       return (
         <PlaylistOverview
           onVote={forceUpdate}
           codes={codes}
           voteState={voteState}
-          voteablePlaylistCollection={voteState?.voteablePlaylistCollection}
         />
       );
     }
