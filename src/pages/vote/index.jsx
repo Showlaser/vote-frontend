@@ -27,7 +27,8 @@ export default function Vote() {
       return false;
     }
 
-    const voteData = await response.json();
+    let voteData = await response.json();
+    voteData.validUntil = new Date(voteData.validUntil);
 
     let newSocket = new WebSocket("ws://localhost:5002/ws");
     newSocket.onopen = (event) => {
@@ -42,6 +43,7 @@ export default function Vote() {
     };
     newSocket.onmessage = (event) => {
       const object = JSON.parse(event.data, toCamelCase);
+      object.validUntil = new Date(voteData.validUntil);
       setVoteState(object);
     };
 
