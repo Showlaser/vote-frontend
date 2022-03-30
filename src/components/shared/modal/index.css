@@ -1,11 +1,11 @@
 #modal {
   width: 100%;
-  height: 100%;
-  position: fixed;
+  height: 100vh;
   z-index: 999;
   background-color: rgba(48, 48, 48, 0.8);
-  margin-top: -42px;
-  margin-left: -25px;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
 
   display: flex;
   place-content: center;

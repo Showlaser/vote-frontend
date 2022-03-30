@@ -70,6 +70,7 @@ export default function PlaylistOverview({ voteState, codes, onVote }) {
     let modal = modalOptions;
     modal.show = false;
     setModalOptions(modal);
+    forceUpdate();
   };
 
   return (
