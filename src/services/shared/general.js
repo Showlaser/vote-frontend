@@ -1,18 +1,10 @@
-import { mapNumber } from "./math";
-
 export function stringIsEmpty(str) {
   return str === undefined || str === "" || str === null;
 }
 
-export function getMappedRgbStringFromPoint(point) {
+export function getRgbStringFromPoint(point) {
   const { redLaserPowerPwm, greenLaserPowerPwm, blueLaserPowerPwm } = point;
-  return `rgb(${mapNumber(redLaserPowerPwm, 0, 511, 0, 255)},${mapNumber(
-    greenLaserPowerPwm,
-    0,
-    511,
-    0,
-    255
-  )},${mapNumber(blueLaserPowerPwm, 0, 511, 0, 255)})`;
+  return `rgb(${redLaserPowerPwm},${greenLaserPowerPwm},${blueLaserPowerPwm})`;
 }
 
 export function getFormDataObject(event) {
@@ -24,16 +16,11 @@ export function getFormDataObject(event) {
   return object;
 }
 
-export function toCamelCase(key, value) {
-  if (value && typeof value === "object") {
-    for (var k in value) {
-      if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
-        value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
-        delete value[k];
-      }
-    }
-  }
-  return value;
+export function toCamelCase(str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function (match, index) {
+    if (+match === 0) return "";
+    return index === 0 ? match.toLowerCase() : match.toUpperCase();
+  });
 }
 
 export const getDifferenceBetweenTwoDatesInMinutesAndSecondsString = (

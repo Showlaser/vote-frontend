@@ -1,7 +1,7 @@
 import { Grid, List, ListItemText } from "@mui/material";
 import LinearWithValueLabel from "components/shared/progress-with-label";
 import { useEffect } from "react";
-import { normalise } from "services/logic/math";
+import { normalise } from "services/shared/math";
 import { getDifferenceBetweenTwoDatesInMinutesAndSecondsString } from "services/shared/general";
 
 export default function VoteOverView({ voteState }) {
