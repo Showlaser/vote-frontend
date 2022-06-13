@@ -1,4 +1,4 @@
-const voteApiUrl = "http://localhost:5002/";
+const voteApiUrl = "https://laser-vote-api.vdarwinkel.nl/";
 
 const apiEndpoints = {
   vote: `${voteApiUrl}vote`,
