@@ -21,7 +21,7 @@ export function toCamelCase(o) {
   if (o instanceof Array) {
     return o.map(function (value) {
       if (typeof value === "object") {
-        value = toCamel(value);
+        value = toCamelCase(value);
       }
       return value;
     });
@@ -37,7 +37,7 @@ export function toCamelCase(o) {
           value instanceof Array ||
           (value !== null && value.constructor === Object)
         ) {
-          value = toCamel(value);
+          value = toCamelCase(value);
         }
         newO[newKey] = value;
       }
