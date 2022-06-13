@@ -16,34 +16,16 @@ export function getFormDataObject(event) {
   return object;
 }
 
-export function toCamelCase(o) {
-  var newO, origKey, newKey, value;
-  if (o instanceof Array) {
-    return o.map(function (value) {
-      if (typeof value === "object") {
-        value = toCamelCase(value);
-      }
-      return value;
-    });
-  } else {
-    newO = {};
-    for (origKey in o) {
-      if (o.hasOwnProperty(origKey)) {
-        newKey = (
-          origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey
-        ).toString();
-        value = o[origKey];
-        if (
-          value instanceof Array ||
-          (value !== null && value.constructor === Object)
-        ) {
-          value = toCamelCase(value);
-        }
-        newO[newKey] = value;
+export function toCamelCase(key, value) {
+  if (value && typeof value === "object") {
+    for (var k in value) {
+      if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+        value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+        delete value[k];
       }
     }
   }
-  return newO;
+  return value;
 }
 
 export const getDifferenceBetweenTwoDatesInMinutesAndSecondsString = (
