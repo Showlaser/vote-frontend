@@ -16,7 +16,7 @@ export function getFormDataObject(event) {
   return object;
 }
 
-function toCamelCase(value) {
+export function toCamelCase(value) {
   var newO, origKey, newKey, value;
   if (value instanceof Array) {
     return value.map(function (value) {
