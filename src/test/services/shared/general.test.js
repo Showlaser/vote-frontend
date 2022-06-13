@@ -26,12 +26,6 @@ test("get mapped rgb string from point test", () => {
   expect(rgbString).toBe("rgb(255,100,80)");
 });
 
-test("to camel case test", () => {
-  const pascalCaseString = "TestStringNeededToConvert";
-  const camelCaseString = toCamelCase(pascalCaseString);
-  expect(camelCaseString).toBe("testStringNeededToConvert");
-});
-
 test("get difference between two dates in minutes and seconds string test", () => {
   const dateNow = new Date();
   let expirationDate = new Date();

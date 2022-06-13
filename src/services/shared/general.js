@@ -16,7 +16,7 @@ export function getFormDataObject(event) {
   return object;
 }
 
-export function toCamelCase(key, value) {
+export function toCamelCase(value) {
   if (value && typeof value === "object") {
     for (var k in value) {
       if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
