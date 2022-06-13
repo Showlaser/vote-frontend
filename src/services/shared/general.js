@@ -16,10 +16,10 @@ export function getFormDataObject(event) {
   return object;
 }
 
-export function toCamelCase(value) {
+export function toCamelCase(o) {
   var newO, origKey, newKey, value;
-  if (value instanceof Array) {
-    return value.map(function (value) {
+  if (o instanceof Array) {
+    return o.map(function (value) {
       if (typeof value === "object") {
         value = toCamel(value);
       }
@@ -27,12 +27,12 @@ export function toCamelCase(value) {
     });
   } else {
     newO = {};
-    for (origKey in value) {
-      if (value.hasOwnProperty(origKey)) {
+    for (origKey in o) {
+      if (o.hasOwnProperty(origKey)) {
         newKey = (
           origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey
         ).toString();
-        value = value[origKey];
+        value = o[origKey];
         if (
           value instanceof Array ||
           (value !== null && value.constructor === Object)
