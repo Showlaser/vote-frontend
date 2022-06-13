@@ -42,7 +42,7 @@ export default function Vote() {
       newSocket.send(JSON.stringify(identifier));
     };
     newSocket.onmessage = (event) => {
-      const object = JSON.parse(event.data, toCamelCase);
+      const object = JSON.parse(toCamelCase(event.data));
       object.validUntil = new Date(voteData.validUntil);
       setVoteState(object);
     };

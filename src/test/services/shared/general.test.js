@@ -2,7 +2,6 @@ import {
   getDifferenceBetweenTwoDatesInMinutesAndSecondsString,
   getRgbStringFromPoint,
   stringIsEmpty,
-  toCamelCase,
 } from "services/shared/general";
 
 test("string is empty test", () => {
