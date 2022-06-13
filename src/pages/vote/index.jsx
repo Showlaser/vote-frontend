@@ -30,9 +30,7 @@ export default function Vote() {
     let voteData = await response.json();
     voteData.validUntil = new Date(voteData.validUntil);
 
-    let newSocket = new WebSocket(
-      "ws://https://laser-vote-api.vdarwinkel.nl/ws"
-    );
+    let newSocket = new WebSocket("wss://laser-vote-api.vdarwinkel.nl/ws");
     newSocket.onopen = (event) => {
       const identifier = {
         voteDataUuid: voteData.uuid,
