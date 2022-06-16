@@ -36,8 +36,8 @@ export default function Join({ onJoin }) {
           defaultValue={joinCodeFromUrl}
           inputProps={{
             autoComplete: "off",
+            autoCapitalize: "none",
           }}
-          autoCapitalize="none"
         />
         <br />
         <TextField
@@ -46,8 +46,8 @@ export default function Join({ onJoin }) {
           defaultValue={accessCodeFromUrl}
           inputProps={{
             autoComplete: "off",
+            autoCapitalize: "none",
           }}
-          autoCapitalize="none"
         />
         <br />
         <Button
