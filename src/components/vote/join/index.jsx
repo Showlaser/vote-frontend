@@ -34,12 +34,20 @@ export default function Join({ onJoin }) {
           id="join-code"
           placeholder="Join code"
           defaultValue={joinCodeFromUrl}
+          inputProps={{
+            autoComplete: "off",
+          }}
+          autoCapitalize="none"
         />
         <br />
         <TextField
           id="access-code"
           placeholder="Access code"
           defaultValue={accessCodeFromUrl}
+          inputProps={{
+            autoComplete: "off",
+          }}
+          autoCapitalize="none"
         />
         <br />
         <Button
